@@ -15,8 +15,8 @@ async fn main() -> Result<()> {
     
     let event = event_handler(|event| {
         match event {
-            Event:: ConnectionStatusChanged{ conn_id, connection_status: ConnectionStatus::Ready, disconnect_reason} => println!("READY..."),
-            Event::ButtonClickOrHold {click_type: ClickType::ButtonClick, conn_id,time_diff, was_queued} => println!("BUTTON CLICK: {:?}", event),
+            Event:: ConnectionStatusChanged{ conn_id: _, connection_status: ConnectionStatus::Ready, disconnect_reason: _ } => println!("READY..."),
+            Event::ButtonClickOrHold {click_type: ClickType::ButtonClick, conn_id:_ ,time_diff: _, was_queued: _} => println!("BUTTON CLICK: {:?}", event),
             _ =>  println!("ping response: {:?}", event)
         }
     });
@@ -28,10 +28,7 @@ async fn main() -> Result<()> {
     let client1 = Arc::new(client);
     let client2 = client1.clone();
 
-
-    let mut conn_id = 0;
-
-    let programLoop = tokio::spawn(async move {
+    let program_loop = tokio::spawn(async move {
         println!("===============================================");
         println!("*** Started listening to events             ***");
         println!("===============================================");
@@ -41,7 +38,7 @@ async fn main() -> Result<()> {
         
         client1
             .submit(Command::CreateConnectionChannel {
-                conn_id,
+                conn_id: 0,
                 bd_addr: button.to_string(),
                 latency_mode: LatencyMode::NormalLatency,
                 auto_disconnect_time: 11111_i16,
@@ -62,7 +59,7 @@ async fn main() -> Result<()> {
     });
 
     lst.await?;
-    programLoop.await?;
+    program_loop.await?;
 
     Ok(())
 }

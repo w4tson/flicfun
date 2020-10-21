@@ -8,5 +8,6 @@ edition = "2018"
 
 [dependencies]
 flicbtn = "0.1.1"
+hueclient = "0.3.10"
 tokio = { version = "0.2", features = ["full"] }
-structopt = "0.3.20"
+structopt = "0.3.20"    
